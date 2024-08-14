@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "strict": true,
+    "jsx": "react",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "typeRoots": [
+      "./node_modules/@types",
+      "@types"
+    ],
+    "paths": {
+      "@/*": [
+        "./app/*"
+      ],
+      "@icons": [
+        "./app/assets/icons/"
+      ],
+      "@types/*": [
+        "./app/types/*"
+      ],
+      "@components/*": [
+        "app/components/common/*"
+      ],
+      "@layouts/*": [
+        "app/components/layouts/*"
+      ],
+      "@api/*": [
+        "app/components/api/*"
+      ]
+    }
+  },
+  "extends": "expo/tsconfig.base"
+}
