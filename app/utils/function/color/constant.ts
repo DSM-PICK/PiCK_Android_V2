@@ -1,3 +1,14 @@
+type FontWeight =
+  | "100"
+  | "200"
+  | "300"
+  | "400"
+  | "500"
+  | "600"
+  | "700"
+  | "800"
+  | "900";
+
 export const light = {
   normal: {
     white: "#ffffff",
@@ -33,8 +44,8 @@ export const light = {
 
 export const dark = {
   normal: {
-    white: "#ffffff",
-    black: "#141414",
+    dark: "#ffffff",
+    white: "#141414",
   },
   BG: "#222222",
   Error: "#FF756D",
@@ -61,5 +72,84 @@ export const dark = {
     700: "#C6C5C7",
     800: "#DDDCDD",
     900: "#F1F1F2",
+  },
+};
+
+export const font = {
+  heading: {
+    1: {
+      fontSize: 42,
+      fontWeight: "600" as FontWeight,
+    },
+    2: {
+      fontSize: 32,
+      fontWeight: "600" as FontWeight,
+    },
+    3: {
+      fontSize: 24,
+      fontWeight: "600" as FontWeight,
+    },
+    4: {
+      fontSize: 20,
+      fontWeight: "600" as FontWeight,
+    },
+  },
+  subTitle: {
+    1: {
+      fontSize: 18,
+      fontWeight: "600" as FontWeight,
+    },
+    2: {
+      fontSize: 16,
+      fontWeight: "600" as FontWeight,
+    },
+    3: {
+      fontSize: 14,
+      fontWeight: "600" as FontWeight,
+    },
+  },
+  body: {
+    1: {
+      fontSize: 14,
+      fontWeight: "500" as FontWeight,
+    },
+    2: {
+      fontSize: 12,
+      fontWeight: "500" as FontWeight,
+    },
+    3: {
+      fontSize: 10,
+      fontWeight: "500" as FontWeight,
+    },
+  },
+  caption: {
+    1: {
+      fontSize: 16,
+      fontWeight: "400" as FontWeight,
+    },
+    2: {
+      fontSize: 14,
+      fontWeight: "400" as FontWeight,
+    },
+  },
+  label: {
+    1: {
+      fontSize: 16,
+      fontWeight: "500" as FontWeight,
+    },
+    2: {
+      fontSize: 12,
+      fontWeight: "500" as FontWeight,
+    },
+  },
+  button: {
+    1: {
+      fontSize: 16,
+      fontWeight: "600" as FontWeight,
+    },
+    2: {
+      fontSize: 12,
+      fontWeight: "600" as FontWeight,
+    },
   },
 };
