@@ -3,7 +3,7 @@ export const light = {
     white: "#ffffff",
     black: "#141414",
   },
-  BG: "#000000",
+  BG: "#ffffff",
   Error: "#FF3B32",
   Main: {
     50: "#F2EAFE",

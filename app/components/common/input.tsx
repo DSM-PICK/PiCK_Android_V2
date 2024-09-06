@@ -5,7 +5,7 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import { HiddenView } from "../layout";
 import { Eye, EyeOff } from "@/assets/icons";
 
-type changeEventType = {
+export type changeEventType = {
   text: string;
   name: string;
 };
@@ -37,15 +37,19 @@ export default function Input({
   const [visible, setVisible] = useState(false);
   const { theme } = useThemeStore();
   return (
-    <>
-      <Text style={[font.body[1], { color: theme.normal.black }]}>{label}</Text>
+    <View style={{ gap: 12 }}>
+      {label && (
+        <Text style={[font.label[1], { color: theme.normal.black }]}>
+          {label}
+        </Text>
+      )}
       <View
         style={[
           style.container,
           {
             backgroundColor: theme.Gray[50],
-            borderColor: theme.Main[500],
-            borderWidth: active ? 1 : 0,
+            borderColor: active ? theme.Main[500] : theme.Gray[50],
+            borderWidth: 1,
           },
         ]}
       >
@@ -54,6 +58,9 @@ export default function Input({
             {
               color: theme.normal.black,
               width: password ? "92%" : "100%",
+              textAlignVertical: multiLine ? "top" : "auto",
+              paddingVertical: multiLine ? 4 : 0,
+              paddingHorizontal: multiLine ? 8 : 0,
             },
           ]}
           editable={!disabled}
@@ -82,7 +89,7 @@ export default function Input({
           )}
         </HiddenView>
       </View>
-    </>
+    </View>
   );
 }
 
@@ -93,6 +100,5 @@ const style = StyleSheet.create({
     borderWidth: 1,
     width: "100%",
     flexDirection: "row",
-    alignItems: "center",
   },
 });

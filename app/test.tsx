@@ -10,18 +10,18 @@ const ThemedComponent = () => {
 
   const containerStyle = {
     ...styles.container,
-    backgroundColor: theme?.BG || "#000000",
+    backgroundColor: theme.BG,
   };
 
   const textStyle = {
     ...styles.text,
-    color: theme?.normal?.white || "#ffffff",
+    color: theme.normal.white,
   };
 
   return (
     <>
       <View style={containerStyle}>
-        <Text style={textStyle}>텍스트 테스트</Text>
+        <Text style={textStyle}>한글 fwe 테스트</Text>
         <Button title="Toggle Theme" onPress={toggleTheme} />
       </View>
     </>
@@ -30,7 +30,6 @@ const ThemedComponent = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },

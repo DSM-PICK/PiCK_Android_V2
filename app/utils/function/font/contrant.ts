@@ -79,7 +79,7 @@ export const font: fontType = {
       fontWeight: "400",
     },
     2: {
-      fontSize: 14,
+      fontSize: 12,
       fontWeight: "400",
     },
   },

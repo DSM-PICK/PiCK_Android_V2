@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import ThemedComponent from "@/test";
-import Test from "@/screen/test";
+import * as Font from "expo-font";
+import { NavigationContainer } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
+import MainBottom from "@/navigation/Navigation";
+
+const loadFonts = () => {
+  return Font.loadAsync({
+    WantedSans: require("assets/fonts/WantedSans-Regular.ttf"),
+  });
+};
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,10 +22,23 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  useEffect(() => {
+    loadFonts()
+      .then(() => setFontsLoaded(true))
+      .catch((error) => console.error(error));
+  }, []);
+
+  if (!fontsLoaded) {
+    return <></>;
+  }
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemedComponent />
-      <Test />
+      <NavigationContainer>
+        <StatusBar style={"auto"} />
+        <MainBottom />
+      </NavigationContainer>
     </QueryClientProvider>
   );
 }
