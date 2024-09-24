@@ -13,6 +13,9 @@ declare module "BoxType" {
     onPress?: () => void;
     width?: string | number;
     height?: string | number;
+    paddingHorizontal?: string | number;
+    paddingVertical?: string | number;
+    padding?: string | number;
   }
 }
 

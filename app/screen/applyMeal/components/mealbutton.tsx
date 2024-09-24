@@ -5,7 +5,6 @@ import { Text, View } from "react-native";
 interface PropType {
   setVisible: ([boolean, string]) => void;
   visible: [boolean, string];
-  value: string;
   id: string;
   text: string;
 }
@@ -17,7 +16,6 @@ const buttonOptions = {
 
 export default function MealButton({
   setVisible,
-  value,
   id,
   text,
   visible,

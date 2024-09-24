@@ -25,7 +25,7 @@ export default function MenuItem({ menu }: PropType) {
           </Text>
         </View>
         <View style={styles.menuContainer}>
-          <HiddenView data={_menu.menu.length !== 0}>
+          <HiddenView data={_menu?.menu?.length !== 0}>
             {_menu.menu.map((item: string, index: number) => (
               <Text
                 style={[font.body[1], { color: theme.normal.black }]}
@@ -35,19 +35,21 @@ export default function MenuItem({ menu }: PropType) {
               </Text>
             ))}
           </HiddenView>
-          <HiddenView data={_menu.menu.length === 0}>
+          <HiddenView data={_menu?.menu?.length === 0}>
             <Text style={{ color: theme.normal.black }}>급식이 없습니다</Text>
           </HiddenView>
         </View>
-        <Text
-          style={[
-            font.caption[2],
-            styles.cal,
-            { backgroundColor: theme.Main[500], color: theme.normal.white },
-          ]}
-        >
-          {cal}
-        </Text>
+        {_menu?.menu?.length !== 0 && (
+          <Text
+            style={[
+              font.caption[2],
+              styles.cal,
+              { backgroundColor: theme.Main[500], color: theme.normal.white },
+            ]}
+          > 
+            {cal}
+          </Text>
+        )}
       </View>
     </View>
   );

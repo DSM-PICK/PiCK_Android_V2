@@ -19,7 +19,6 @@ import { useQuery } from "@tanstack/react-query";
 import { path, queryKeys } from "@/constants";
 import { font, get } from "@/utils";
 import { SelectSection } from "./components/selectsection";
-import Toggle from "@/components/common/toggle";
 
 export const AllPage = () => {
   const { theme } = useThemeStore();
@@ -28,8 +27,8 @@ export const AllPage = () => {
     queryKey: queryKeys.simple,
     queryFn: () => get(`${path.user}/simple`),
     select: (res) => {
-      const { class_num, grade, num, name } = res?.data;
-      return [grade, class_num, num, name];
+      const { class_num, grade, num, user_name } = res?.data;
+      return [grade, class_num, num, user_name];
     },
   });
 
@@ -42,7 +41,7 @@ export const AllPage = () => {
       </View>
       <ScrollView style={style.contentContainer}>
         <View style={style.realProfileContainer}>
-          <BasicProfile face={theme.Gray[50]} body={theme.Main[400]} />
+          <BasicProfile face={theme.Main[400]} body={theme.Gray[50]} />
           <View>
             <Text style={[font.label[1], { color: theme.normal.black }]}>
               대덕소프트웨어마이스터고등학교
@@ -55,11 +54,6 @@ export const AllPage = () => {
         <SelectSection title="도움말">
           <>
             <SelectionView
-              Icon={<CardIcon Fill={theme.Main[600]} />}
-              to="모바일학생증"
-              title="모바일 학생증"
-            />
-            <SelectionView
               Icon={<SmailIcon Fill={theme.Main[600]} />}
               to="자습감독"
               title="자습감독 선생님 확인"
@@ -69,11 +63,11 @@ export const AllPage = () => {
               to="공지사항"
               title="공지사항"
             />
-            <SelectionView
+            {/* <SelectionView
               Icon={<BugIcon Fill={theme.Main[600]} />}
               to="버그제보"
               title="버그제보"
-            />
+            /> */}
           </>
         </SelectSection>
         <SelectSection title="설정">
@@ -83,11 +77,11 @@ export const AllPage = () => {
               to="커스텀"
               title="커스텀"
             />
-            <SelectionView
+            {/* <SelectionView
               Icon={<AlarmIcon Fill={theme.Main[600]} />}
               to="알림설정"
               title="알림설정"
-            />
+            /> */}
           </>
         </SelectSection>
         <SelectSection title="계정">
@@ -115,7 +109,6 @@ const style = StyleSheet.create({
     paddingHorizontal: 24,
     backgroundColor: "bule",
   },
-
   profileContainer: {
     flexDirection: "column",
     gap: 32,

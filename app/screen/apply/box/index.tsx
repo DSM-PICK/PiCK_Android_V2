@@ -24,7 +24,7 @@ export const ApplicationBox = ({
   to,
 }: ApplicationBoxProps) => {
   const navigation = useNavigation();
-  const navigate = [to, { screen: to, type: to }] as never;
+  const navigate = [to, { type: to }] as never;
 
   const { theme } = useThemeStore();
   return (

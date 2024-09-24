@@ -3,18 +3,11 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { StyleSheet, Text, View } from "react-native";
 import { font, getDates, getToday } from "@/utils";
 import { weekPropType } from "CalanderType";
-import { days } from "@/constants";
+import { days } from "@/constants"; // 요일 배열이 포함된 파일
 import { HiddenView } from "@/components/layout";
 import useThemeStore from "@/utils/stores/usethemeProp";
 
 const { year, month, date: todayDate } = getToday();
-
-// 이전 달의 마지막 날짜 계산 함수
-const getPrevMonthEndDate = (year: number, month: number) => {
-  const prevMonth = month === 1 ? 12 : month - 1;
-  const prevYear = month === 1 ? year - 1 : year;
-  return new Date(prevYear, prevMonth, 0).getDate();
-};
 
 export default function Weeks({
   date,
@@ -26,75 +19,77 @@ export default function Weeks({
   const { theme } = useThemeStore();
   const [selYear, selMonth, selDate] = selected || [0, 0, 0];
   const [calYear, calMonth] = date;
-  console.log(picks);
 
-  const { startDay, endDate } = getDates(date); // 현재 달의 시작 요일과 마지막 날짜
-  const prevEndDate = getPrevMonthEndDate(calYear, calMonth); // 이전 달의 마지막 날짜 계산
+  const { startDay, endDate } = getDates(date);
 
   const isToday = calYear === year && calMonth === month;
   const isSelected = selected && calYear === selYear && calMonth === selMonth;
 
-  const arr = new Array(startDay)
-    .fill("")
-    .map((_, i) => prevEndDate - startDay + i + 1)
-    .concat(Array.from(new Array(endDate).keys(), (v) => v + 1))
-    .concat(
-      Array.from(new Array(35 - (endDate + startDay)).keys(), (v) => v + 1)
-    )
-    .slice(0, 35);
+  const arr = Array.from(new Array(endDate).keys(), (v) => v + 1);
 
   let _weeks = [];
   let _days = [];
 
   const handleSelect = (_date: number, day: number) => {
-    console.log(_date, day + "mdweim");
     setSelected([calYear, calMonth, _date]);
-    //onSelect({ year: calYear, month: calMonth, date: _date, day: days[day] });
   };
 
-  arr.map((item, index) => {
-    const isPrevMonth = index < startDay;
-    const isNextMonth = index >= endDate + startDay;
-    const isCurrentMonth = !isPrevMonth && !isNextMonth;
-    const isTodayStyle = isToday && todayDate === item && isCurrentMonth;
+  // 요일 배열
+  const weekDays = days; // days 배열이 ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] 형식이어야 합니다.
 
-    const isSelectedStyle = isSelected && isCurrentMonth && item === selDate;
+  // 요일 라인을 추가
+  const renderWeekDays = () => (
+    <View style={styles.weekLineContainer}>
+      {weekDays.map((day, index) => (
+        <Text
+          key={index}
+          style={[
+            styles.dayLabel,
+            { color: theme.normal.black },
+            font.label[1],
+          ]}
+        >
+          {day}
+        </Text>
+      ))}
+    </View>
+  );
+
+  _weeks.push(renderWeekDays()); // 요일 추가
+
+  arr.map((item, index) => {
+    const isCurrentMonth = true; // 현재 달의 날짜이므로 항상 true
+    const isTodayStyle = isToday && todayDate === item; // 오늘 날짜 스타일
+    const isSelectedStyle = isSelected && item === selDate; // 선택된 날짜 스타일
 
     _days.push(
       <TouchableWithoutFeedback
         key={index}
-        style={[
-          styles.dayContainer,
-          isTodayStyle && {
-            backgroundColor: theme.Main[100],
-            borderRadius: 100,
-          },
-          isSelectedStyle && {
-            borderColor: theme.Main[100],
-            borderWidth: 1,
-            borderRadius: 100,
-          },
-        ]}
+        style={[styles.dayContainer]}
         onPress={() => {
-          !onSelect && isCurrentMonth && handleSelect(item, _days.length);
+          !onSelect && handleSelect(item, _days?.length);
         }}
       >
         <Text
           style={[
             {
-              color: isCurrentMonth ? theme.normal.black : theme.Gray[300], // 이전 달/다음 달 날짜는 회색 처리
+              color: theme.normal.black,
+            },
+            isSelectedStyle && {
+              borderColor: theme.Main[100],
+              borderWidth: 1,
+              borderRadius: 100,
+            },
+            isTodayStyle && {
+              backgroundColor: theme.Main[100],
+              borderRadius: 100,
             },
             font.caption[1],
           ]}
         >
           {item}
         </Text>
-        <HiddenView
-          data={
-            (isSelected && item === selDate) ||
-            (picks?.includes(item) && isCurrentMonth)
-          }
-        >
+        <HiddenView data={picks?.includes(item) && isCurrentMonth}>
           <View
             style={[styles.dotElement, { backgroundColor: theme.Main[500] }]}
           />
@@ -102,7 +97,7 @@ export default function Weeks({
       </TouchableWithoutFeedback>
     );
 
-    if (_days.length > 6 || index === arr.length - 1) {
+    if (_days?.length > 6 || index === arr?.length - 1) {
       _weeks.push(
         <View key={index} style={styles.weekLineContainer}>
           {_days.map((i) => i)}
@@ -121,10 +116,15 @@ const styles = StyleSheet.create({
     height: 28,
     justifyContent: "center",
     alignItems: "center",
+    padding: 24,
   },
   weekLineContainer: {
     flexDirection: "row",
     gap: 24,
+  },
+  dayLabel: {
+    width: 28,
+    textAlign: "center",
   },
   dotElement: {
     width: 5,

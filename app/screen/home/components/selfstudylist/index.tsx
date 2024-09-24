@@ -12,7 +12,7 @@ const { year, month, date: _date } = getToday();
 export const TodaySelfStudyList = () => {
   const [date, setDate] = useState({ year, month, date: _date });
 
-  const { data: teacherData, isError } = useQuery({
+  const { data: teacherData } = useQuery({
     queryKey: [queryKeys.teacher, date],
     queryFn: () => get(`${path.selfStudy}/today?date=${calcDate(date)}`),
     placeholderData: (prev) => prev,
@@ -23,13 +23,27 @@ export const TodaySelfStudyList = () => {
   return (
     <View style={[{ backgroundColor: theme.Gray[50] }, style.container]}>
       <View style={{ gap: 12 }}>
-        <Text style={[font.body[2], { color: theme.Gray[900] }]}>
-          오늘의 자습감독 선생님 입니다
-        </Text>
-        {teacherData?.map((item, index) => (
-          <TeacherItem key={index} item={item} />
-        ))}
+        {teacherData?.length === 0 ? (
+          <View>
+            <Text style={[font.label[2], { color: theme.normal.black }]}>
+              오늘은
+            </Text>
+            <Text style={[font.label[2], { color: theme.normal.black }]}>
+              자습감독 선생님이 없습니다.
+            </Text>
+          </View>
+        ) : (
+          <>
+            <Text style={[font.body[2], { color: theme.Gray[900] }]}>
+              오늘의 자습감독 선생님 입니다
+            </Text>
+            {teacherData?.map((item, index) => (
+              <TeacherItem key={index} item={item} />
+            ))}
+          </>
+        )}
       </View>
+
       <Image source={Test} alt="fen" />
     </View>
   );

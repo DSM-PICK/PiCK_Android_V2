@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { useState } from "react";
 import Modal from "@/components/common/modal";
 import ScrollPicker from "@/components/common/scrollPicker";
-import { font } from "@/utils";
+import { font, useToast } from "@/utils";
 import useThemeStore from "@/utils/stores/usethemeProp";
 
 interface PropType {
@@ -13,10 +13,11 @@ interface PropType {
 }
 
 export default function ClassPicker({ visible, setVisible, onDone }: PropType) {
+  const toast = useToast();
   const { theme } = useThemeStore();
   const [time, setTime] = useState({
-    start_period: 1,
-    end_period: 1,
+    start: 1,
+    end: 1,
   });
 
   const handleScroll = (item: string, id: string) => {
@@ -24,8 +25,8 @@ export default function ClassPicker({ visible, setVisible, onDone }: PropType) {
   };
 
   const handleAccept = () => {
-    if (time.end_period < time.start_period) {
-      // toast.error("올바른 교시를 선택해주세요");
+    if (time.end < time.start) {
+      toast.error("올바른 교시를 선택해주세요");
     } else {
       onDone(time);
     }
@@ -61,7 +62,7 @@ export default function ClassPicker({ visible, setVisible, onDone }: PropType) {
             <ScrollPicker
               items={Array.from(new Array(10).keys()).map((i) => `${i + 1}`)}
               onScroll={handleScroll}
-              id="start_period"
+              id="start"
             />
             <Text style={[font.subTitle[1], { color: theme.normal.black }]}>
               교시
@@ -70,7 +71,7 @@ export default function ClassPicker({ visible, setVisible, onDone }: PropType) {
             <ScrollPicker
               items={Array.from(new Array(10).keys()).map((i) => `${i + 1}`)}
               onScroll={handleScroll}
-              id="end_period"
+              id="end"
             />
             <Text style={[font.subTitle[1], { color: theme.normal.black }]}>
               교시

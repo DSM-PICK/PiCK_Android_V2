@@ -33,7 +33,7 @@ export const Notice = () => {
           overScrollMode="never"
           data={noticeData}
           ListEmptyComponent={() => (
-            <Text style={{ color: theme.normal.black }}>
+            <Text style={{ color: theme.normal.black, height: 280 }}>
               공지사항이 없습니다
             </Text>
           )}

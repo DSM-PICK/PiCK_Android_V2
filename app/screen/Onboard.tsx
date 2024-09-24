@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 
 export const OnBoard = ({ navigation }: any) => {
   const { theme } = useThemeStore();
+  const navigate = useNavigation();
   return (
     <View style={[style.container, { backgroundColor: theme.BG }]}>
       <View style={style.centered}>

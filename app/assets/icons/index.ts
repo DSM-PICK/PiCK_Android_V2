@@ -33,8 +33,14 @@ export { default as SmailIcon } from "./smail";
 export { default as SpeakerIcon } from "./speaker";
 export { default as MainIcon } from "./main";
 export { default as TimeIcon } from "./time";
+export { default as BugImgUpload } from "./bugimgupload";
+export { default as NoticeImg } from "./WhiteNoticeImg.png";
+export { default as LeftArrow } from "./leftArrow";
+export { default as RightArrow } from "./rightArrow";
+export { default as UpArrow } from "./up";
 
 export interface Iconprops {
+  size?: string;
   Fill?: string;
   OnPress?: () => void;
 }

@@ -1,31 +1,32 @@
 import Back from "@/assets/icons/backIcon";
-import Header from "@/components/common/header";
-import { font } from "@/utils";
+//import Header from "@/components/common/header";
+import { font, useToast } from "@/utils";
 import useThemeStore from "@/utils/stores/usethemeProp";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { CustomBox } from "./components/box";
-import Meal from "@/assets/icons/meal";
+//import Meal from "@/assets/icons/meal";
 import { MainIcon, TimeIcon } from "@/assets/icons";
 import useViewSettingStore from "@/utils/stores/useViewSetting";
-import useTimePickerSetting from "@/utils/stores/useTimePickerSetting";
+//import useTimePickerSetting from "@/utils/stores/useTimePickerSetting";
 
 export const CustomPage = () => {
   const { theme } = useThemeStore();
   const navigation = useNavigation();
   const [mainPage, setMainPage] = useState<boolean>(false);
-  const [picker, setPicker] = useState<boolean>(false);
+  // const [picker, setPicker] = useState<boolean>(false);
+  const toast = useToast();
 
   const { view, Change } = useViewSettingStore((state) => ({
     view: state.view,
     Change: state.Change,
   }));
 
-  const { Picker, ChangePicker } = useTimePickerSetting((state) => ({
-    Picker: state.Picker,
-    ChangePicker: state.ChangePicker,
-  }));
+  // const { Picker, ChangePicker } = useTimePickerSetting((state) => ({
+  //   Picker: state.Picker,
+  //   ChangePicker: state.ChangePicker,
+  // }));
 
   return (
     <View
@@ -57,6 +58,7 @@ export const CustomPage = () => {
           buttonOnPress={() => {
             Change();
             setMainPage(false);
+            toast.success("완료되었습니다!");
           }}
           selected={mainPage}
           onPress={() => setMainPage(!mainPage)}
@@ -66,7 +68,7 @@ export const CustomPage = () => {
 현재는 ${view === "meals" ? "급식으" : "시간표"}로 설정되어 있어요`}
           buttonMessage={`${view === "meals" ? "시간표" : "급식으"}로 보기`}
         />
-        <CustomBox
+        {/* <CustomBox
           buttonMessage={`${
             Picker === "classTime" ? "시간으" : "교시"
           }로 설정하기`}
@@ -80,7 +82,7 @@ export const CustomPage = () => {
           title="신청 단위 설정"
           explane={`픽에서 신청할 때 시간 또는 교시로 설정할 수 있어요!
 현재는 ${Picker === "classTime" ? "시간으" : "교시"}로 설정되어 있어요.`}
-        />
+        /> */}
       </View>
     </View>
   );
@@ -107,7 +109,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 8,
-    backgroundColor: "red",
     width: "100%",
   },
   header: {

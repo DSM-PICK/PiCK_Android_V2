@@ -21,14 +21,14 @@ export default function SimpleNotice({ title, date, id }: PropType) {
 
   return (
     <TouchableOpacity
-      // onPress={() => navigation.navigate(...path)}
+      onPress={() => navigation.navigate(...path)}
       style={styles.container}
     >
       <NoticeIcon Fill={theme.Main[300]} />
       <View style={{ gap: 5 }}>
         <View style={styles.titleContainer}>
           <Text style={[font.label[1], { color: theme.normal.black }]}>
-            {title.length > 21 ? title.slice(0, 21) + ".." : title}
+            {title?.length > 21 ? title.slice(0, 21) + ".." : title}
           </Text>
           {_date === "오늘" && <New Fill={theme.Main[400]} />}
         </View>

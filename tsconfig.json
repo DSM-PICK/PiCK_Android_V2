@@ -8,29 +8,15 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
-    "typeRoots": [
-      "./node_modules/@types",
-      "@types"
-    ],
+    "typeRoots": ["./node_modules/@types", "@types"],
+    "types": ["@react-native-firebase/app", "@react-native-firebase/messaging"],
     "paths": {
-      "@/*": [
-        "./app/*"
-      ],
-      "@icons": [
-        "./app/assets/icons/"
-      ],
-      "@types/*": [
-        "./app/types/*"
-      ],
-      "@components/*": [
-        "app/components/common/*"
-      ],
-      "@layouts/*": [
-        "app/components/layouts/*"
-      ],
-      "@api/*": [
-        "app/components/api/*"
-      ]
+      "@/*": ["./app/*"],
+      "@icons": ["./app/assets/icons/"],
+      "@types/*": ["./app/types/*"],
+      "@components/*": ["app/components/common/*"],
+      "@layouts/*": ["app/components/layouts/*"],
+      "@api/*": ["app/components/api/*"]
     }
   },
   "extends": "expo/tsconfig.base"

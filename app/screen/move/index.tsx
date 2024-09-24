@@ -4,7 +4,7 @@ import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { ClassButton, ClassPicker, FloorButton } from "./components";
 import { floorData } from "./floorData";
 import Back from "@/assets/icons/backIcon";
-import { font, post } from "@/utils";
+import { font, post, useToast } from "@/utils";
 import { useNavigation } from "@react-navigation/native";
 import { Button } from "@/components/common";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -22,19 +22,21 @@ export const Move = () => {
   });
   const disabled = !selected.classroom_name;
   const queryClient = useQueryClient();
+  const toast = useToast();
 
   const { mutate: moveMutate } = useMutation({
     mutationFn: (item: any) => post(`${path.classRoom}/move`, item),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: queryKeys.anyApply });
       await navigation.reset({ routes: [{ name: "홈" as never }] });
-      //toast.success(`${className} 이동이 신청됬습니다`);
+      toast.success(`${selected.classroom_name} 이동 신청이 완료되었습니다!`);
     },
-    onError: ({ status }: any) =>
-      // toast.error(
-      //   status === 409 ? "이미 신청되었습니다" : "오류가 발생했습니다"
-      // ),
-      console.log(status),
+    onError: ({ status }: any) => {
+      navigation.reset({ routes: [{ name: "신청" as never }] });
+      toast.error(
+        status === 409 ? "이미 신청되었습니다" : "오류가 발생했습니다"
+      );
+    },
   });
 
   const Renderor = ({ item }) => (

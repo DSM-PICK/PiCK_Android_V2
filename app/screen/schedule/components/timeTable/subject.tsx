@@ -12,8 +12,6 @@ interface PropType {
 export default function Subject({ index, name, icon }: PropType) {
   const { theme } = useThemeStore();
 
-  console.log(index, name, icon);
-
   return (
     <View style={styles.flexContainer}>
       <Text style={[{ color: theme.normal.black }, font.subTitle[2]]}>
@@ -34,6 +32,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 28,
-    paddingVertical: 4,
+    paddingVertical: 8,
   },
 });

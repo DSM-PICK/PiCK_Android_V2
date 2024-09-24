@@ -1,7 +1,6 @@
 export { Home } from "./home/index";
 export { Login } from "./Login";
 export { OnBoard } from "./Onboard";
-export { BottomSheetTestScreen } from "./bottom";
 export { TodaySelfStudyList } from "./home/components/selfstudylist/index";
 export { Apply } from "./apply/index";
 export { Out } from "./out/index";
@@ -11,3 +10,9 @@ export { Schedule } from "./schedule/index";
 export { AllPage } from "./all/index";
 export { CustomPage } from "./custom/index";
 export { AlarmCustom } from "./alramCustom/index";
+export { Bug } from "./bug/index";
+export { Notice } from "./notice/index";
+export { DetailNotice } from "./notice/detail";
+export { My } from "./mypage/index";
+export { SelfStudyList } from "./selfStudyList/index";
+export { Melas } from "./meals/index";

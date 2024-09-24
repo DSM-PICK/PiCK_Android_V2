@@ -1,7 +1,8 @@
 import { Button, Input } from "@/components/common";
+import Weeks from "@/components/common/calendar/weeks";
 import { changeEventType } from "@/components/common/input";
 import { path } from "@/constants/querykey";
-import { font, setToken } from "@/utils";
+import { font, setToken, setUserId } from "@/utils";
 import { get, loginInstance } from "@/utils/function/api";
 import useThemeStore from "@/utils/stores/usethemeProp";
 import { useNavigation } from "@react-navigation/native";
@@ -22,6 +23,7 @@ export const Login = () => {
   const [data, setData] = useState({
     account_id: "",
     password: "",
+    device_token: "",
   });
   const disabled = !!!data.account_id || !!!data.password;
   const navigation = useNavigation();
@@ -41,7 +43,9 @@ export const Login = () => {
     onSuccess: async (res: AxiosResponse) => {
       const { access_token } = res?.data;
       await setToken(access_token, Object.values(data), "");
+      setUserId(data.account_id);
       get("/user/simple").then(async (res) => {
+        console.log(access_token);
         await setToken(access_token, Object.values(data), res.data.name);
       });
       navigation.navigate("홈" as never);

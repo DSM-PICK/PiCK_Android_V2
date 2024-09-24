@@ -5,8 +5,8 @@ import { TouchableNativeFeedback, Text, View, StyleSheet } from "react-native"; 
 type SelectedType = {
   floor: number;
   classroom_name: string | undefined;
-  start_period?: number;
-  end_period?: number;
+  start?: number;
+  end?: number;
 };
 
 interface PropType {

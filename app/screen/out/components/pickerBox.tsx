@@ -8,13 +8,19 @@ interface PropType {
   setVisible: () => void;
   time: string;
   placeholder: string;
+  classTime?: boolean;
 }
 
-export default function PickerBox({ setVisible, time, placeholder }: PropType) {
+export default function PickerBox({
+  classTime,
+  setVisible,
+  time,
+  placeholder,
+}: PropType) {
   const { theme } = useThemeStore();
 
   return (
-    <Box width={100} onPress={setVisible} rounded="big">
+    <Box width={classTime ? "100%" : 100} onPress={setVisible} rounded="big">
       <Text
         style={[
           font.caption[1],

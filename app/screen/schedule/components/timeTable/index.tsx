@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FlatList, Text, View } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import { path, queryKeys } from "@/constants";
@@ -10,10 +10,8 @@ import useThemeStore from "@/utils/stores/usethemeProp";
 const days = ["월", "화", "수", "목", "금"];
 const { dayNum: today } = getToday();
 
-export default function TimeTables() {
+export default function TimeTable() {
   const [_date, _setDate] = useState([0, 0, 0]);
-  const [month, date, day] = _date;
-  const isFirst = useRef(true);
   const { theme } = useThemeStore();
 
   const { data: tableData } = useQuery({
@@ -23,11 +21,11 @@ export default function TimeTables() {
   });
 
   return (
-    <Carousel height="100">
+    <Carousel height="100" first={today !== 6 && today !== 0 ? today - 1 : 0}>
       {tableData?.map((dayData, index) => (
-        <View key={index} style={{ flex: 1 }}>
+        <View key={index} style={{ gap: 20 }}>
           <Text style={[font.label[1], { color: theme.Gray[900] }]}>
-            {`${days[day]}요일`}
+            {`${days[index]}요일`}
           </Text>
           <FlatList
             data={dayData.timetables}
@@ -39,6 +37,11 @@ export default function TimeTables() {
               />
             )}
             keyExtractor={(item) => item.id}
+            ListEmptyComponent={
+              <Text style={[font.caption[1], { color: theme.normal.black }]}>
+                시간표가 없습니다
+              </Text>
+            }
           />
         </View>
       ))}

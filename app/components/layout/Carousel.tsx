@@ -1,9 +1,14 @@
-import React, { useRef, useState, useCallback } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import React, { useRef, useState, useCallback, useEffect } from "react";
+import {
+  DimensionValue,
+  FlatList,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from "react-native";
 import { PropType } from "CarouselType";
 import useThemeStore from "@/utils/stores/usethemeProp";
-
-const gap = 16;
 
 export default function Carousel({
   children,
@@ -12,13 +17,13 @@ export default function Carousel({
   first,
 }: PropType) {
   const testRef = useRef<FlatList<any>>(null);
-  const [width, setWidth] = useState(0);
+  const [width, setWidth] = useState(100);
   const [page, setPage] = useState(0);
   const { theme } = useThemeStore();
 
   const handleScroll = useCallback(
     (e: any) => {
-      const newPage = Math.floor(e.nativeEvent.contentOffset.x / width);
+      const newPage = Math.floor(e.nativeEvent.contentOffset.x / (width - 20));
       if (newPage !== page && onScroll) {
         onScroll(newPage);
       }
@@ -28,13 +33,13 @@ export default function Carousel({
   );
 
   const styleInLine = {
-    height: height,
+    height: height as DimensionValue,
     width: width,
-  };
+  } as StyleProp<ViewStyle>;
 
-  const Renderor = ({ item }: { item: React.ReactNode }) => (
-    <View style={styleInLine}>{item}</View>
-  );
+  const Renderor = ({ item }: { item: React.ReactNode }) => {
+    return <View style={styleInLine}>{item}</View>;
+  };
 
   return (
     <View style={styles.container}>
@@ -53,14 +58,16 @@ export default function Carousel({
         renderItem={Renderor}
         onLayout={(event) => {
           const { width: _width } = event.nativeEvent.layout;
-          setWidth(_width);
-          if (first) {
-            setTimeout(() => {
-              testRef.current?.scrollToOffset({
-                animated: false,
-                offset: _width * first,
-              });
-            }, 5);
+          if (_width > 0 && _width !== width) {
+            setWidth(_width);
+            if (first) {
+              setTimeout(() => {
+                testRef.current?.scrollToOffset({
+                  animated: false,
+                  offset: _width * first,
+                });
+              }, 5);
+            }
           }
         }}
         onScrollToIndexFailed={() => {}}
@@ -87,7 +94,7 @@ export default function Carousel({
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    height: "75%",
+    height: "70%",
   },
   indicatorContainer: {
     flexDirection: "row",

@@ -17,7 +17,6 @@ interface PropType {
 
 export const ScheduleBox = ({ item, date }: PropType) => {
   const { theme } = useThemeStore();
-  const _date = new Date(`${date[0]}-${date[1]}-${item.day}`);
 
   return (
     <View style={{ width: "100%" }}>

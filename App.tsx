@@ -3,7 +3,11 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import * as Font from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
-import MainBottom from "@/navigation/Navigation";
+import useNotification from "@/hooks/useNotification";
+import ToastManager from "@/components/common/toast";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { getToken } from "@/utils";
+import MainNavigator from "@/navigation/Navigation";
 
 const loadFonts = () => {
   return Font.loadAsync({
@@ -30,15 +34,22 @@ function App() {
       .catch((error) => console.error(error));
   }, []);
 
+  // useNotification을 항상 호출
+  useNotification();
+
   if (!fontsLoaded) {
-    return <></>;
+    return <></>; // 폰트가 로드되지 않은 경우 빈 화면 반환
   }
+
   return (
     <QueryClientProvider client={queryClient}>
-      <NavigationContainer>
-        <StatusBar style={"auto"} />
-        <MainBottom />
-      </NavigationContainer>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <NavigationContainer>
+          <ToastManager />
+          <StatusBar style={"auto"} />
+          <MainNavigator />
+        </NavigationContainer>
+      </GestureHandlerRootView>
     </QueryClientProvider>
   );
 }

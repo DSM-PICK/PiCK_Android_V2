@@ -12,15 +12,17 @@ interface PropType {
   setVisible: (visible: any) => void;
   onDone: (time: any, type: string) => void;
   Stringtype: string;
+  classTime?: boolean;
 }
 
-const defaultData = { hour: "00", minute: "00" };
+const defaultData = { hour: "08", minute: "00" };
 
 export default function TimePicker({
   visible,
   setVisible,
   onDone,
   Stringtype,
+  classTime,
 }: PropType) {
   const { theme } = useThemeStore();
   const { Picker } = useTimePickerSetting();
@@ -67,7 +69,7 @@ export default function TimePicker({
               },
             ]}
           >
-            {Stringtype} 시간을 선택해주세요
+            {Stringtype} {classTime ? "교시" : "시간"}을 선택해주세요
           </Text>
           {Picker === "time" ? (
             <View style={[styles.timeView, { gap: 32 }]}>
@@ -110,7 +112,7 @@ export default function TimePicker({
               <ScrollPicker
                 items={Array.from(new Array(10).keys()).map((i) => `${i + 1}`)}
                 onScroll={handleScroll}
-                id="start_period"
+                id="hour"
               />
               <Text style={[font.subTitle[1], { color: theme.normal.black }]}>
                 교시
@@ -119,7 +121,7 @@ export default function TimePicker({
               <ScrollPicker
                 items={Array.from(new Array(10).keys()).map((i) => `${i + 1}`)}
                 onScroll={handleScroll}
-                id="end_period"
+                id="minute"
               />
               <Text style={[font.subTitle[1], { color: theme.normal.black }]}>
                 교시

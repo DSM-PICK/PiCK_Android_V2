@@ -1,35 +1,29 @@
 {
   "expo": {
     "name": "PICK",
-    "slug": "PICK",
+    "slug": "pickv2",
     "version": "2.0.0",
     "orientation": "portrait",
-    "icon": "./app/assets/icon.png",
+    "icon": "./app/assets/main.png",
     "userInterfaceStyle": "light",
     "platforms": ["ios", "android", "web"],
     "splash": {
-      "image": "./app/assets/splash.png",
+      "image": "./app/assets/main.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "sdkVersion": "51.0.0",
+    "jsEngine": "hermes",
     "assetBundlePatterns": ["**/*"],
     "android": {
-      "versionCode": 7,
+      "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./app/assets/icon.png",
+        "foregroundImage": "./app/assets/main.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.sevenstandard.PICK"
+      "package": "com.sevenstandard.PICK",
+      "googleServicesFile": "google-services.json"
     },
-    "plugins": [
-      [
-        "@sentry/react-native/expo",
-        {
-          "organization": "daedeok-software-meister-hi-76",
-          "project": "pick-android"
-        }
-      ]
-    ],
     "packagerOpts": {
       "config": "metro.config.js",
       "sourceExts": [
@@ -48,8 +42,10 @@
     },
     "extra": {
       "eas": {
-        "projectId": "342bfabd-2278-47bd-9ac9-a10c9042ccb3"
+        "projectId": "16ef657b-1e01-4015-abd6-6577954c2412"
       }
-    }
+    },
+    "owner": "parkhyuna",
+    "plugins": ["expo-asset", "expo-font"]
   }
 }

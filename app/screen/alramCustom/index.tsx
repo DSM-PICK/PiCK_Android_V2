@@ -1,21 +1,46 @@
 import Back from "@/assets/icons/backIcon";
-import Toggle from "@/components/common/toggle";
-import { font } from "@/utils";
+import { font, get } from "@/utils";
 import useThemeStore from "@/utils/stores/usethemeProp";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { AlarmBox } from "./box";
+import { useQuery } from "@tanstack/react-query";
+import { path, queryKeys } from "@/constants";
 
 export const AlarmCustom = () => {
   const { theme } = useThemeStore();
-  const [allOn, setAllOn] = useState<boolean>(false);
-  const [on, setOn] = useState({
-    out: true,
-    classMove: true,
-    notice: false,
-    weekendMeal: true,
+
+  const { data: alarmData } = useQuery({
+    queryKey: queryKeys.notification,
+    queryFn: () => get(`${path.notification}/my-subscribe`),
+    select: (res) => res?.data?.subscribe_topic_response || [],
   });
+
+  const initialState = alarmData
+    ? {
+        out:
+          alarmData.find((topic) => topic.topic === "EARLY_RETURN")
+            ?.is_subscribed || false,
+        classMove:
+          alarmData.find((topic) => topic.topic === "APPLICATION")
+            ?.is_subscribed || false,
+        notice:
+          alarmData.find((topic) => topic.topic === "NEW_NOTICE")
+            ?.is_subscribed || false,
+        weekendMeal:
+          alarmData.find((topic) => topic.topic === "WEEKEND_MEAL")
+            ?.is_subscribed || false,
+      }
+    : {
+        out: false,
+        classMove: false,
+        notice: false,
+        weekendMeal: false,
+      };
+
+  const [on, setOn] = useState(initialState);
+  const [allOn, setAllOn] = useState<boolean>(false);
 
   const Check = () => {
     if (on.out && on.classMove && on.notice && on.weekendMeal) {
@@ -42,6 +67,12 @@ export const AlarmCustom = () => {
       return newState;
     });
   };
+
+  useEffect(() => {
+    if (alarmData) {
+      setOn(initialState);
+    }
+  }, [alarmData]);
 
   useEffect(() => {
     Check();

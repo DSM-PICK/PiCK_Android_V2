@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import MealButton from "./components/mealbutton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { path, queryKeys } from "@/constants";
-import { font, get, getToday, patch } from "@/utils";
+import { font, get, getToday, patch, useToast } from "@/utils";
 import { Button } from "@/components/common";
 import Back from "@/assets/icons/backIcon";
 import useThemeStore from "@/utils/stores/usethemeProp";
@@ -14,10 +14,10 @@ const { month, date } = getToday();
 
 export const WeekendMealApply = () => {
   const [visible, setVisible] = useState<[boolean, string]>([false, "NO"]);
-  const [meal, setMeal] = useState(undefined);
   const queryClient = useQueryClient();
   const { theme } = useThemeStore();
   const navigation = useNavigation();
+  const toast = useToast();
 
   const { data: weekendMealData } = useQuery({
     queryKey: queryKeys.weekendMeal,
@@ -25,17 +25,28 @@ export const WeekendMealApply = () => {
     select: (res) => res?.data.status,
   });
 
+  useEffect(() => {
+    if (weekendMealData) {
+      setVisible([true, weekendMealData]);
+    }
+  }, [weekendMealData]);
+
   const { mutate: weekendMealMutate } = useMutation({
     mutationFn: (id: string) =>
       patch(`${path.weekendMeal}/my-status?status=${id}`),
-    onSuccess: () => navigation.navigate("홈" as never),
-    //queryClient.invalidateQueries({ queryKey: queryKeys.weekendMeal }),
-    onError: (error) => console.log(error.stack),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.weekendMeal });
+      navigation.reset({ routes: [{ name: "신청" as never }] });
+      toast.success("주말급식 신청이 완료되었습니다!");
+    },
+    onError: () => toast.error("주말급식 신청을 실패하였습니다!"),
   });
 
-  useEffect(() => {
-    setMeal(weekendMealData && weekendMealData);
-  }, [weekendMealData]);
+  const { data: ApplyDateData } = useQuery({
+    queryKey: [queryKeys.weekendMeal],
+    queryFn: () => get(`${path.weekendMeal}/application`),
+    select: (res) => res?.data,
+  });
 
   return (
     <View
@@ -76,20 +87,18 @@ export const WeekendMealApply = () => {
                 ]}
               >
                 <Text style={[font.body[1], { color: theme.normal.black }]}>
-                  10월 주말 급식 신청
+                  {ApplyDateData?.month}월 주말 급식 신청
                 </Text>
                 <View style={[styles.buttonContainer]}>
                   <MealButton
                     setVisible={setVisible}
                     id="OK"
-                    value={meal!}
                     text=" 신청 "
                     visible={visible}
                   />
                   <MealButton
                     setVisible={setVisible}
                     id="NO"
-                    value={meal!}
                     text="미신청"
                     visible={visible}
                   />
@@ -144,7 +153,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 8,
-    backgroundColor: "red",
     width: "100%",
   },
   header: {

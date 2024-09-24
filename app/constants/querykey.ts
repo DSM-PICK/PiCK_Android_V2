@@ -10,6 +10,7 @@ export const queryKeys = {
   notice: ["notice"],
   timeTable: ["timeTable"],
   apply: ["apply"],
+  notification: ["notification"],
 };
 
 export const path = {
@@ -23,4 +24,5 @@ export const path = {
   schedule: "/schedule",
   meal: "/meal",
   timeTable: "/timetable",
+  notification: "/notification",
 };

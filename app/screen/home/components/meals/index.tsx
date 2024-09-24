@@ -3,7 +3,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { useQuery } from "@tanstack/react-query";
 import { StyleSheet, Text, View } from "react-native";
 import { useState } from "react";
-import { calcDate, get, getToday } from "@/utils";
+import { calcDate, font, get, getToday } from "@/utils";
 import { path, queryKeys } from "@/constants";
 import MenuItem from "./MenuItem";
 import useThemeStore from "@/utils/stores/usethemeProp";
@@ -17,13 +17,17 @@ export const Meal = () => {
   const { data: mealData } = useQuery({
     queryKey: [queryKeys.meal, date],
     queryFn: () => get(`${path.meal}/date?date=${calcDate(date)}`),
-    select: (res) => Object.entries(res?.data?.meals),
+    select: (res) => Object.entries(res?.data?.meal_list),
     placeholderData: (prev) => prev,
   });
 
+  console.log(mealData);
+
   return (
     <View style={styles.container}>
-      <Text style={{ color: theme.Gray[700] }}>오늘의 급식</Text>
+      <Text style={[font.label[1], { color: theme.Gray[700] }]}>
+        오늘의 급식
+      </Text>
       <FlatList
         overScrollMode="never"
         contentContainerStyle={{

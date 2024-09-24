@@ -12,21 +12,24 @@ import { useNavigation } from "@react-navigation/native";
 import Back from "@/assets/icons/backIcon";
 import Header from "@/components/common/header";
 import TimePicker from "@/components/common/timepicker";
-import { font, post } from "@/utils";
+import { font, post, useToast } from "@/utils";
 import useThemeStore from "@/utils/stores/usethemeProp";
 import PickerBox from "./components/pickerBox";
 import TernaryView from "@/components/layout/TernaryView";
 import { Button, Input } from "@/components/common";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/constants";
+import useTimePickerSetting from "@/utils/stores/useTimePickerSetting";
 
 export const Out = ({ navigation, route }) => {
+  const toast = useToast();
+  const { Picker } = useTimePickerSetting();
   const queryClient = useQueryClient();
   const [out, setOut] = useState({
     start: undefined,
     end: undefined,
     reason: "",
-    application_type: "TIME",
+    application_type: Picker === "time" ? "TIME" : "PERIOD",
   });
   const [pickVisible, setPickVisible] = useState<[boolean, string]>([
     false,
@@ -60,21 +63,21 @@ export const Out = ({ navigation, route }) => {
   const { mutate: outMutate } = useMutation({
     mutationFn: () =>
       post(isOut("/application", "/early-return/create"), {
-        start: out.start + ":00",
-        end: out.end + ":00",
+        start: out.start,
+        end: out.end,
         reason: out.reason,
         application_type: out.application_type,
       }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: queryKeys.anyApply });
       await navigation.reset({ routes: [{ name: "신청" as never }] });
-      // toast.success(`${type} 신청이 완료되었습니다.`);
+      toast.success(`${type} 신청이 완료되었습니다!`);
     },
     onError: ({ status }: any) => {
-      console.log(status);
-      // toast.error(
-      //   status === "409" ? "이미 신청되었습니다" : "오류가 발생했습니다"
-      // );
+      navigation.reset({ routes: [{ name: "신청" as never }] });
+      toast.error(
+        status === "409" ? "이미 신청되었습니다" : "오류가 발생했습니다"
+      );
     },
   });
 
@@ -101,42 +104,59 @@ export const Out = ({ navigation, route }) => {
             </Text>
             <View style={{ gap: 12, marginTop: 24 }}>
               <Text style={[font.label[1], { color: theme.normal.black }]}>
-                희망 {type} 시간을 선택하세요
+                희망 {type} {Picker === "time" ? "시간" : "교시"}을 선택하세요
               </Text>
               <View>
                 <TernaryView
                   data={type === "외출"}
                   onTrue={
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 12,
-                      }}
-                    >
-                      <PickerBox
-                        full
-                        setVisible={() => setPickVisible([true, "start"])}
-                        time={out.start}
-                        placeholder="선택"
-                      />
-                      <Text
-                        style={[font.label[1], { color: theme.normal.black }]}
-                      >
-                        부터
-                      </Text>
-                      <PickerBox
-                        full
-                        setVisible={() => setPickVisible([true, "end"])}
-                        time={out.end}
-                        placeholder="선택"
-                      />
-                      <Text
-                        style={[font.label[1], { color: theme.normal.black }]}
-                      >
-                        까지
-                      </Text>
-                    </View>
+                    <>
+                      {Picker === "time" ? (
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            gap: 12,
+                          }}
+                        >
+                          <PickerBox
+                            full
+                            setVisible={() => setPickVisible([true, "start"])}
+                            time={out.start}
+                            placeholder="선택"
+                          />
+                          <Text
+                            style={[
+                              font.label[1],
+                              { color: theme.normal.black },
+                            ]}
+                          >
+                            부터
+                          </Text>
+                          <PickerBox
+                            full
+                            setVisible={() => setPickVisible([true, "end"])}
+                            time={out.end}
+                            placeholder="선택"
+                          />
+                          <Text
+                            style={[
+                              font.label[1],
+                              { color: theme.normal.black },
+                            ]}
+                          >
+                            까지
+                          </Text>
+                        </View>
+                      ) : (
+                        <PickerBox
+                          classTime
+                          setVisible={() => setPickVisible([true, "start"])}
+                          time={out.start}
+                          placeholder="선택"
+                        />
+                      )}
+                    </>
                   }
                   onFalse={
                     <PickerBox
@@ -167,6 +187,7 @@ export const Out = ({ navigation, route }) => {
           visible={pickVisible}
           setVisible={setPickVisible}
           onDone={handleChange}
+          classTime
         />
         <View style={styles.buttonContainer}>
           <Button size="main" onPress={outMutate} disabled={!disabled}>

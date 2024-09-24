@@ -17,38 +17,62 @@ export default function TimeTable() {
     queryFn: () => get(`${path.timeTable}/today`),
     select: (res) => res?.data.timetables,
   });
-
+  
   return (
-    <View style={{ gap: 12 }}>
-      <View style={styles.headerContainer}>
-        <Text
+    <>
+      {tableData?.length === 0 ? (
+        <View
           style={[
-            font.label[1],
-            { color: theme.Gray[700], paddingVertical: 8 },
+            {
+              backgroundColor: theme.Gray[50],
+            },
+            styles.notTimeTable,
           ]}
         >
-          오늘의 시간표
-        </Text>
-      </View>
-      <View>
-        <FlatList
-          overScrollMode="never"
-          contentContainerStyle={{ gap: 10 }}
-          data={tableData}
-          ListEmptyComponent={() => (
-            <Text style={{ color: theme.normal.black }}>시간표가 없습니다</Text>
-          )}
-          keyExtractor={(_, index) => index.toString()}
-          renderItem={({ item, index }) => (
-            <Subject
-              index={index + 1}
-              name={item.subject_name}
-              icon={item.image}
+          <Text
+            style={[
+              font.label[1],
+              { textAlign: "center", color: theme.normal.black },
+            ]}
+          >
+            오늘은 시간표가 없습니다
+          </Text>
+        </View>
+      ) : (
+        <View style={{ gap: 12 }}>
+          <View style={styles.headerContainer}>
+            <Text
+              style={[
+                font.label[1],
+                { color: theme.Gray[700], paddingVertical: 8 },
+              ]}
+            >
+              오늘의 시간표
+            </Text>
+          </View>
+          <View>
+            <FlatList
+              overScrollMode="never"
+              contentContainerStyle={{ gap: 10 }}
+              data={tableData}
+              ListEmptyComponent={() => (
+                <Text style={{ color: theme.normal.black }}>
+                  시간표가 없습니다
+                </Text>
+              )}
+              keyExtractor={(_, index) => index.toString()}
+              renderItem={({ item, index }) => (
+                <Subject
+                  index={index + 1}
+                  name={item.subject_name}
+                  icon={item.image}
+                />
+              )}
             />
-          )}
-        />
-      </View>
-    </View>
+          </View>
+        </View>
+      )}
+    </>
   );
 }
 
@@ -57,5 +81,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
+  },
+  notTimeTable: {
+    paddingVertical: 35,
+    paddingHorizontal: 20,
+    borderRadius: 8,
   },
 });

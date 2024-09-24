@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "767679189190",
+    "project_id": "pick-13653",
+    "storage_bucket": "pick-13653.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:767679189190:android:b695d758a5ad45b29c87c7",
+        "android_client_info": {
+          "package_name": "com.sevenstandard.PICK"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzuHlrnvqoMT5cJYpisFT4mwDXQqb25yw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

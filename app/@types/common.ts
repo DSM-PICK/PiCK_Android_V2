@@ -33,11 +33,12 @@ declare module "CalanderType" {
     onMove?: ({}: any) => void;
     onSelect?: ({}: any) => void;
   }
+  // CalanderType.ts
   export interface weekPropType {
-    date: number[];
-    setSelected: ([]) => void;
-    picks: number[] | undefined;
-    selected: number[] | undefined;
-    onSelect: (({}) => void) | undefined;
+    date: number[]; // [year, month]
+    picks?: number[];
+    onSelect?: (date: number) => void; // 날짜를 number로 받도록 수정
+    selected?: number | undefined; // 선택된 날짜
+    setSelected?: (date: number) => void; // 선택된 날짜를 설정하는 함수
   }
 }
