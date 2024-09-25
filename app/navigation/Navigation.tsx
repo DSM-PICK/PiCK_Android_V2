@@ -123,20 +123,18 @@ export default function MainNavigator({ route, auth }) {
         name="로그인"
         component={_.Login}
         options={{
-          tabBarStyle: {
-            display: "none",
-          },
+          tabBarButton: () => null,
           headerShown: false,
+          tabBarStyle: { display: "none" },
         }}
       />
       <Tab.Screen
         name="온보딩"
         component={_.OnBoard}
         options={{
-          tabBarStyle: {
-            display: "none",
-          },
+          tabBarButton: () => null,
           headerShown: false,
+          tabBarStyle: { display: "none" },
         }}
       />
     </Tab.Navigator>

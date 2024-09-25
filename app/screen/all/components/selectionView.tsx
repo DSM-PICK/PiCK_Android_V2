@@ -14,17 +14,24 @@ import {
 interface SelecteViewProps {
   Icon: React.ReactElement;
   title: string;
-  to: string;
+  to: string | (() => void);
 }
 
 export default function SelectionView({ Icon, title, to }: SelecteViewProps) {
   const { theme } = useThemeStore();
   const navigation = useNavigation();
-  const navigate = [to, { screen: to, type: to }] as never;
+  const navigate: any =
+    typeof to === "string"
+      ? ([to, { screen: to, type: to }] as never)
+      : undefined;
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate(...navigate)}
+      onPress={() =>
+        typeof to === "string"
+          ? navigation.navigate(...(navigate as never))
+          : to()
+      }
       style={[styles.container]}
     >
       {Icon}

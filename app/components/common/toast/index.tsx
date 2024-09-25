@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     position: "absolute",
     bottom: 1,
+    zIndex: 100,
     alignSelf: "center",
     elevation: 3,
   },

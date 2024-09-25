@@ -20,7 +20,7 @@
     "axios": "1.2.1",
     "date-fns": "^4.1.0",
     "doctor": "^0.3.0",
-    "eas-cli": "^12.1.0",
+    "eas-cli": "^12.5.0",
     "expo": "51",
     "expo-asset": "~10.0.10",
     "expo-dev-client": "~4.0.26",

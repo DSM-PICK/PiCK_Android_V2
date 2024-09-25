@@ -17,8 +17,9 @@ import { Header } from "@/components/common";
 import BasicProfile from "@/assets/icons/basicProfile";
 import { useQuery } from "@tanstack/react-query";
 import { path, queryKeys } from "@/constants";
-import { font, get } from "@/utils";
+import { font, get, removeToken } from "@/utils";
 import { SelectSection } from "./components/selectsection";
+import { useNavigation } from "@react-navigation/native";
 
 export const AllPage = () => {
   const { theme } = useThemeStore();
@@ -31,6 +32,7 @@ export const AllPage = () => {
       return [grade, class_num, num, user_name];
     },
   });
+  const navigation = useNavigation();
 
   return (
     <ScrollView style={{ height: "100%", backgroundColor: theme.BG }}>
@@ -93,7 +95,12 @@ export const AllPage = () => {
             />
             <SelectionView
               Icon={<LogOutIcon Fill={theme.Error} />}
-              to="로그아웃"
+              to={() => {
+                removeToken();
+                navigation.navigate(
+                  ...(["온보딩", { screen: "온보딩", type: "온보딩" }] as never)
+                );
+              }}
               title="로그아웃"
             />
           </>
