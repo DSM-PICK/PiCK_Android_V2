@@ -9,6 +9,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -59,7 +60,7 @@ export const Melas = () => {
         }}
       >
         <Header />
-        <View style={{ paddingTop: 40 }}>
+        <View style={{ marginTop: 80 }}>
           <WrappedCalendarComponents onDateChange={handleDateChange} />
         </View>
         <View style={{ paddingVertical: 20, paddingHorizontal: 24 }}>

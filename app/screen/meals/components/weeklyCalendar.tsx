@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
     alignItems: "center",
-    marginTop: 40,
   },
   arrowIcon: {
     width: 24,

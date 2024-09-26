@@ -78,7 +78,7 @@ export const WeekendMealApply = () => {
         </Text>
         <View style={styles.endMealBoxContainer}>
           <TernaryView
-            data={date}
+            data={ApplyDateData?.status}
             onTrue={
               <View
                 style={[
@@ -105,7 +105,18 @@ export const WeekendMealApply = () => {
                 </View>
               </View>
             }
-            onFalse={<Text>신청 기간이 아닙니다.</Text>}
+            onFalse={
+              <View
+                style={[
+                  { backgroundColor: theme.Gray[50] },
+                  styles.applyContainer,
+                ]}
+              >
+                <Text style={[font.body[1], { color: theme.normal.black }]}>
+                  신청 기간이 아닙니다.
+                </Text>
+              </View>
+            }
           />
         </View>
       </View>
@@ -124,6 +135,7 @@ export const WeekendMealApply = () => {
             weekendMealMutate(visible[1]);
           }}
           size="main"
+          disabled={!ApplyDateData?.status}
         >
           저장하기
         </Button>

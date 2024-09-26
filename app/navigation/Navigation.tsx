@@ -14,7 +14,6 @@ import { getToken } from "@/utils";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { ApplyStack } from "./ApplyStack";
 import { AllPageStack } from "./Allstack";
-import { createStackNavigator } from "@react-navigation/stack";
 
 const Tab = createBottomTabNavigator();
 
@@ -40,8 +39,7 @@ const getTabBarVisibility = (route) => {
   return true;
 };
 
-const Stack = createStackNavigator();
-export default function MainNavigator({ route, auth }) {
+export default function MainNavigator() {
   const [token, setTokens] = useState(null);
   useEffect(() => {
     const tokenfn = async () => {
@@ -64,7 +62,7 @@ export default function MainNavigator({ route, auth }) {
           display: getTabBarVisibility(route) ? "flex" : "none",
         },
       })}
-      initialRouteName={auth ? "홈" : "온보딩"}
+      initialRouteName={token ? "홈" : "온보딩"}
     >
       <Tab.Screen
         name="홈"

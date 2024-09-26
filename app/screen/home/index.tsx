@@ -42,7 +42,7 @@ export const Home = () => {
     const Socket = async () => {
       const { accessToken } = await getToken();
       const ws = new WebSocket(
-        `https://stag-server.xquare.app/dsm-pick/main`,
+        `https://prod-server.xquare.app/dsm-pick/main`,
         null,
         {
           headers: {

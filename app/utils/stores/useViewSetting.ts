@@ -1,16 +1,27 @@
 import create from "zustand";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface ViewState {
   view: "timetable" | "meals";
-  Change: () => void;
+  changeView: () => void;
 }
 
-const useViewSettingStore = create<ViewState>((set) => ({
+const loadViewSetting = async () => {
+  const storedView = await AsyncStorage.getItem("view");
+  if (storedView) {
+    useViewSettingStore.setState({ view: storedView as "timetable" | "meals" });
+  }
+};
+
+const useViewSettingStore = create<ViewState>((set, get) => ({
   view: "timetable",
-  Change: () =>
-    set((state) => ({
-      view: state.view === "timetable" ? "meals" : "timetable",
-    })),
+  changeView: async () => {
+    const newView = get().view === "timetable" ? "meals" : "timetable";
+    await AsyncStorage.setItem("view", newView);
+    set({ view: newView });
+  },
 }));
+
+loadViewSetting();
 
 export default useViewSettingStore;

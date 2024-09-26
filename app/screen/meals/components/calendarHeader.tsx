@@ -33,8 +33,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 20,
-    paddingTop: 20,
   },
   changeButton: {
     flexDirection: "row",

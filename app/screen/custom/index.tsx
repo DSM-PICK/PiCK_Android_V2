@@ -20,7 +20,7 @@ export const CustomPage = () => {
 
   const { view, Change } = useViewSettingStore((state) => ({
     view: state.view,
-    Change: state.Change,
+    Change: state.changeView,
   }));
 
   // const { Picker, ChangePicker } = useTimePickerSetting((state) => ({
