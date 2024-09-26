@@ -12,7 +12,10 @@
       "distribution": "internal"
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_BASE_URL": "https://prog-server.xquare.app/dsm-pick"
+      }
     },
     "local": {
       "android": {
