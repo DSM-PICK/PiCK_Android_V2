@@ -4,12 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as _ from "@/screen";
 import Home from "@/assets/icons/home";
 import useThemeStore from "@/utils/stores/usethemeProp";
-import {
-  AllIcon,
-  ApplicationIcon,
-  MelasIcon,
-  ScheduleIcon,
-} from "@/assets/icons";
+import { AllIcon, ApplicationIcon, MelasIcon, ScheduleIcon } from "@/assets/icons";
 import { getToken } from "@/utils";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { ApplyStack } from "./ApplyStack";
@@ -17,9 +12,8 @@ import { AllPageStack } from "./Allstack";
 
 const Tab = createBottomTabNavigator();
 
-const getTabBarVisibility = (route) => {
+const getTabBarVisibility = (route: any) => {
   const routeName = getFocusedRouteNameFromRoute(route) ?? "";
-  console.log(routeName + "1");
   if (
     routeName === "공지" ||
     routeName === "상세공지" ||
@@ -39,17 +33,11 @@ const getTabBarVisibility = (route) => {
   return true;
 };
 
-export default function MainNavigator() {
-  const [token, setTokens] = useState(null);
-  useEffect(() => {
-    const tokenfn = async () => {
-      const { accessToken } = await getToken();
-      console.log(accessToken);
-      setTokens(accessToken);
-    };
+interface IProp {
+  token?: null | string;
+}
 
-    tokenfn();
-  }, []);
+export default function MainNavigator({ token }: IProp) {
   const { theme } = useThemeStore();
 
   return (
@@ -69,9 +57,7 @@ export default function MainNavigator() {
         component={_.Home}
         options={{
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <Home Fill={focused ? theme.Main[500] : theme.Gray[500]} />
-          ),
+          tabBarIcon: ({ focused }) => <Home Fill={focused ? theme.Main[500] : theme.Gray[500]} />,
           unmountOnBlur: true,
         }}
       />
@@ -91,9 +77,7 @@ export default function MainNavigator() {
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <ApplicationIcon
-              Fill={focused ? theme.Main[500] : theme.Gray[500]}
-            />
+            <ApplicationIcon Fill={focused ? theme.Main[500] : theme.Gray[500]} />
           ),
         }}
       />

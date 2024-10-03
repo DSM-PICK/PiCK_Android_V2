@@ -11,13 +11,10 @@ export const loginInstance = axios.create({
   timeout: 3000,
 });
 
-console.log(process.env.EXPO_PUBLIC_BASE_URL);
-
 instance.interceptors.request.use(
   async (res) => {
     const { accessToken } = await getToken();
-    if (accessToken) {
-      console.log(accessToken);
+    if (accessToken && res?.headers) {
       res.headers["Authorization"] = "Bearer " + accessToken;
     }
     return res;
