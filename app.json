@@ -2,7 +2,7 @@
   "expo": {
     "name": "PICK",
     "slug": "PICK",
-    "version": "2.0.0",
+    "version": "2.0.3",
     "orientation": "portrait",
     "icon": "./app/assets/main.png",
     "userInterfaceStyle": "light",
@@ -16,7 +16,7 @@
     "jsEngine": "hermes",
     "assetBundlePatterns": ["**/*"],
     "android": {
-      "versionCode": 10,
+      "versionCode": 15,
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/main.png",
         "backgroundColor": "#ffffff"
