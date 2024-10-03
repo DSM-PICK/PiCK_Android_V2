@@ -27,6 +27,14 @@ const queryClient = new QueryClient({
 
 function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [token, setTokens] = useState<null | string | undefined>(undefined);
+  useEffect(() => {
+    const tokenfn = async () => {
+      const { accessToken } = await getToken();
+      setTokens(accessToken);
+    };
+    tokenfn();
+  }, []);
 
   useEffect(() => {
     loadFonts()
@@ -37,7 +45,7 @@ function App() {
   // useNotification을 항상 호출
   useNotification();
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded || token === undefined) {
     return <></>; // 폰트가 로드되지 않은 경우 빈 화면 반환
   }
 
@@ -47,7 +55,7 @@ function App() {
         <NavigationContainer>
           <ToastManager />
           <StatusBar style={"auto"} />
-          <MainNavigator />
+          <MainNavigator token={token} />
         </NavigationContainer>
       </GestureHandlerRootView>
     </QueryClientProvider>
