@@ -25,32 +25,36 @@ export const Out = ({ navigation, route }) => {
   const toast = useToast();
   const { Picker } = useTimePickerSetting();
   const queryClient = useQueryClient();
+  const { type } = route.params;
   const [out, setOut] = useState({
     start: undefined,
     end: undefined,
     reason: "",
-    application_type: Picker === "time" ? "TIME" : "PERIOD",
+    application_type: Picker === "classTime" && type === "외출" ? "PERIOD" : "TIME",
   });
-  const [pickVisible, setPickVisible] = useState<[boolean, string]>([
-    false,
-    "",
-  ]);
-  const { type } = route.params;
+  const [pickVisible, setPickVisible] = useState<[boolean, string]>([false, ""]);
+
   const { theme } = useThemeStore();
   const { start: start, end: end } = out;
   const scrollViewRef = useRef<ScrollView>(null);
 
   const handleChange = (item: any, type: string) => {
-    setOut({ ...out, [type]: item });
+    if (type !== "Class") {
+      setOut({ ...out, [type]: item });
+    } else {
+      const [s, e] = item
+        .replace("08", "1")
+        .replace("00", "1")
+        .replaceAll(/\b(10|[1-9])\b/g, "$1교시")
+        .split(":");
+      setOut({ ...out, start: s, end: e });
+    }
   };
 
   useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      () => {
-        scrollViewRef.current?.scrollToEnd({ animated: true });
-      }
-    );
+    const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    });
 
     return () => {
       keyboardDidShowListener.remove();
@@ -75,9 +79,7 @@ export const Out = ({ navigation, route }) => {
     },
     onError: ({ status }: any) => {
       navigation.reset({ routes: [{ name: "신청" as never }] });
-      toast.error(
-        status === "409" ? "이미 신청되었습니다" : "오류가 발생했습니다"
-      );
+      toast.error(status === "409" ? "이미 신청되었습니다" : "오류가 발생했습니다");
     },
   });
 
@@ -93,74 +95,56 @@ export const Out = ({ navigation, route }) => {
             <Pressable style={styles.Icon} onPress={() => navigation.goBack()}>
               <Back Fill={theme.normal.black} />
             </Pressable>
-            <Text style={[font.body[1], { color: theme.normal.black }]}>
-              {type} 신청
-            </Text>
+            <Text style={[font.body[1], { color: theme.normal.black }]}>{type} 신청</Text>
             <View style={styles.Icon} />
           </View>
           <View style={styles.containerWrap}>
-            <Text style={[font.heading[4], { color: theme.normal.black }]}>
-              {type} 신청
-            </Text>
+            <Text style={[font.heading[4], { color: theme.normal.black }]}>{type} 신청</Text>
             <View style={{ gap: 12, marginTop: 24 }}>
               <Text style={[font.label[1], { color: theme.normal.black }]}>
-                희망 {type} {Picker === "time" ? "시간" : "교시"}을 선택하세요
+                희망 {type} {type === "외출" ? (Picker === "time" ? "시간" : "교시") : "시간"}을
+                선택하세요
               </Text>
               <View>
                 <TernaryView
                   data={type === "외출"}
                   onTrue={
                     <>
-                      {Picker === "time" ? (
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            gap: 12,
-                          }}
-                        >
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          alignItems: "center",
+                          gap: 12,
+                        }}
+                      >
+                        {Picker === "time" ? (
+                          <>
+                            <PickerBox
+                              setVisible={() => setPickVisible([true, "start"])}
+                              time={out.start}
+                              placeholder="선택"
+                            />
+                            <Text style={[font.label[1], { color: theme.normal.black }]}>부터</Text>
+                            <PickerBox
+                              setVisible={() => setPickVisible([true, "end"])}
+                              time={out.end}
+                              placeholder="선택"
+                            />
+                            <Text style={[font.label[1], { color: theme.normal.black }]}>까지</Text>
+                          </>
+                        ) : (
                           <PickerBox
-                            full
-                            setVisible={() => setPickVisible([true, "start"])}
-                            time={out.start}
+                            classT
+                            setVisible={() => setPickVisible([true, "Class"])}
+                            time={out.start + "||" + out.end}
                             placeholder="선택"
                           />
-                          <Text
-                            style={[
-                              font.label[1],
-                              { color: theme.normal.black },
-                            ]}
-                          >
-                            부터
-                          </Text>
-                          <PickerBox
-                            full
-                            setVisible={() => setPickVisible([true, "end"])}
-                            time={out.end}
-                            placeholder="선택"
-                          />
-                          <Text
-                            style={[
-                              font.label[1],
-                              { color: theme.normal.black },
-                            ]}
-                          >
-                            까지
-                          </Text>
-                        </View>
-                      ) : (
-                        <PickerBox
-                          classTime
-                          setVisible={() => setPickVisible([true, "start"])}
-                          time={out.start}
-                          placeholder="선택"
-                        />
-                      )}
+                        )}
+                      </View>
                     </>
                   }
                   onFalse={
                     <PickerBox
-                      full
                       setVisible={() => setPickVisible([true, "start"])}
                       time={start}
                       placeholder="선택"
@@ -187,7 +171,7 @@ export const Out = ({ navigation, route }) => {
           visible={pickVisible}
           setVisible={setPickVisible}
           onDone={handleChange}
-          classTime
+          classTime={Picker === "classTime" && type === "외출"}
         />
         <View style={styles.buttonContainer}>
           <Button size="main" onPress={outMutate} disabled={!disabled}>

@@ -9,13 +9,13 @@ import { CustomBox } from "./components/box";
 //import Meal from "@/assets/icons/meal";
 import { MainIcon, TimeIcon } from "@/assets/icons";
 import useViewSettingStore from "@/utils/stores/useViewSetting";
-//import useTimePickerSetting from "@/utils/stores/useTimePickerSetting";
+import useTimePickerSetting from "@/utils/stores/useTimePickerSetting";
 
 export const CustomPage = () => {
   const { theme } = useThemeStore();
   const navigation = useNavigation();
   const [mainPage, setMainPage] = useState<boolean>(false);
-  // const [picker, setPicker] = useState<boolean>(false);
+  const [picker, setPicker] = useState<boolean>(false);
   const toast = useToast();
 
   const { view, Change } = useViewSettingStore((state) => ({
@@ -23,10 +23,10 @@ export const CustomPage = () => {
     Change: state.changeView,
   }));
 
-  // const { Picker, ChangePicker } = useTimePickerSetting((state) => ({
-  //   Picker: state.Picker,
-  //   ChangePicker: state.ChangePicker,
-  // }));
+  const { Picker, ChangePicker } = useTimePickerSetting((state) => ({
+    Picker: state.Picker,
+    ChangePicker: state.ChangePicker,
+  }));
 
   return (
     <View
@@ -47,12 +47,8 @@ export const CustomPage = () => {
       </View>
       <View style={{ paddingTop: 24, gap: 20 }}>
         <View style={{ gap: 8 }}>
-          <Text style={[font.heading[4], { color: theme.normal.black }]}>
-            커스텀
-          </Text>
-          <Text style={[font.body[1], { color: theme.Gray[500] }]}>
-            픽은 커스텀할 수 있어요!
-          </Text>
+          <Text style={[font.heading[4], { color: theme.normal.black }]}>커스텀</Text>
+          <Text style={[font.body[1], { color: theme.Gray[500] }]}>픽은 커스텀할 수 있어요!</Text>
         </View>
         <CustomBox
           buttonOnPress={() => {
@@ -68,13 +64,12 @@ export const CustomPage = () => {
 현재는 ${view === "meals" ? "급식으" : "시간표"}로 설정되어 있어요`}
           buttonMessage={`${view === "meals" ? "시간표" : "급식으"}로 보기`}
         />
-        {/* <CustomBox
-          buttonMessage={`${
-            Picker === "classTime" ? "시간으" : "교시"
-          }로 설정하기`}
+        <CustomBox
+          buttonMessage={`${Picker === "classTime" ? "시간으" : "교시"}로 설정하기`}
           buttonOnPress={() => {
             ChangePicker();
             setPicker(false);
+            toast.success("완료되었습니다!");
           }}
           selected={picker}
           onPress={() => setPicker(!picker)}
@@ -82,7 +77,7 @@ export const CustomPage = () => {
           title="신청 단위 설정"
           explane={`픽에서 신청할 때 시간 또는 교시로 설정할 수 있어요!
 현재는 ${Picker === "classTime" ? "시간으" : "교시"}로 설정되어 있어요.`}
-        /> */}
+        />
       </View>
     </View>
   );

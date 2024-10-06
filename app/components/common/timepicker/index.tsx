@@ -5,7 +5,6 @@ import Modal from "../modal";
 import ScrollPicker from "../scrollPicker";
 import useThemeStore from "@/utils/stores/usethemeProp";
 import { font } from "@/utils";
-import useTimePickerSetting from "@/utils/stores/useTimePickerSetting";
 
 interface PropType {
   visible: [boolean, string];
@@ -25,7 +24,6 @@ export default function TimePicker({
   classTime,
 }: PropType) {
   const { theme } = useThemeStore();
-  const { Picker } = useTimePickerSetting();
   const [time, setTime] = useState(defaultData);
   const { hour, minute } = time;
 
@@ -71,7 +69,7 @@ export default function TimePicker({
           >
             {Stringtype} {classTime ? "교시" : "시간"}을 선택해주세요
           </Text>
-          {Picker === "time" ? (
+          {!classTime ? (
             <View style={[styles.timeView, { gap: 32 }]}>
               <View style={[styles.timeView, { gap: 24 }]}>
                 <ScrollPicker
@@ -81,24 +79,16 @@ export default function TimePicker({
                   onScroll={handleScroll}
                   id="hour"
                 />
-                <Text style={[font.subTitle[1], { color: theme.normal.black }]}>
-                  시
-                </Text>
+                <Text style={[font.subTitle[1], { color: theme.normal.black }]}>시</Text>
               </View>
-              <Text style={[font.heading[3], { color: theme.normal.black }]}>
-                -
-              </Text>
+              <Text style={[font.heading[3], { color: theme.normal.black }]}>-</Text>
               <View style={[styles.timeView, { gap: 24 }]}>
                 <ScrollPicker
-                  items={Array.from(new Array(60).keys()).map((i) =>
-                    i.toString().padStart(2, "0")
-                  )}
+                  items={Array.from(new Array(60).keys()).map((i) => i.toString().padStart(2, "0"))}
                   onScroll={handleScroll}
                   id="minute"
                 />
-                <Text style={[font.subTitle[1], { color: theme.normal.black }]}>
-                  분
-                </Text>
+                <Text style={[font.subTitle[1], { color: theme.normal.black }]}>분</Text>
               </View>
             </View>
           ) : (
@@ -114,23 +104,17 @@ export default function TimePicker({
                 onScroll={handleScroll}
                 id="hour"
               />
-              <Text style={[font.subTitle[1], { color: theme.normal.black }]}>
-                교시
-              </Text>
+              <Text style={[font.subTitle[1], { color: theme.normal.black }]}>교시</Text>
               <Text>~</Text>
               <ScrollPicker
                 items={Array.from(new Array(10).keys()).map((i) => `${i + 1}`)}
                 onScroll={handleScroll}
                 id="minute"
               />
-              <Text style={[font.subTitle[1], { color: theme.normal.black }]}>
-                교시
-              </Text>
+              <Text style={[font.subTitle[1], { color: theme.normal.black }]}>교시</Text>
             </View>
           )}
-          <View
-            style={[styles.highlightLine, { backgroundColor: theme.Main[50] }]}
-          />
+          <View style={[styles.highlightLine, { backgroundColor: theme.Main[50] }]} />
         </View>
       </View>
     </Modal>
