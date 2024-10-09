@@ -20,12 +20,6 @@ module.exports = function (api) {
           ],
           alias: {
             "@": "./app",
-            "@icons": "./app/assets/icons",
-            "@types": "./app/types",
-            "@commonents": "./app/components/common",
-            "@layouts": "./app/components/layouts",
-            "@api": "./app/components/api",
-            "@utils": "./app/utils/function",
           },
         },
       ],
