@@ -1,5 +1,6 @@
-import { AxiosResponse } from "axios";
 export * from "./querykey";
+export * from "./color";
+export * from "./font";
 
 const size = 50;
 
